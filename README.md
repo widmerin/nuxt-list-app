@@ -1,4 +1,4 @@
-# nuxt_list
+# Nuxt List App
 
 ## Build Setup
 
