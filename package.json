@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "core-js": "^3.15.1",
+    "netlify": "^8.0.4",
+    "netlify-identity-widget": "^1.9.2",
     "nuxt": "^2.15.7"
   }
 }
