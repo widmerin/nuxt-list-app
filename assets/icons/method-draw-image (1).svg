@@ -1,0 +1,41 @@
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect fill="#48426d" id="canvas_background" height="802" width="802" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_27">
+   <g transform="matrix(11.065695429858863,0,0,11.065695429858863,0,0) " id="svg_4">
+    <g id="svg_5">
+     <path id="svg_6" fill="#ffffff" d="m63.21025,57.97875l-40.204,0c-1.657,0 -3,-1.343 -3,-3s1.343,-3 3,-3l40.203,0c1.657,0 3,1.343 3,3s-1.342,3 -2.999,3z"/>
+     <path id="svg_7" fill="#ffffff" d="m63.21025,39.14775l-40.204,0c-1.657,0 -3,-1.343 -3,-3s1.343,-3 3,-3l40.203,0c1.657,0 3,1.343 3,3c0.001,1.657 -1.342,3 -2.999,3z"/>
+     <path id="svg_8" fill="#ffffff" d="m63.21025,20.31675l-40.204,0c-1.657,0 -3,-1.343 -3,-3s1.343,-3 3,-3l40.203,0c1.657,0 3,1.343 3,3s-1.342,3 -2.999,3z"/>
+     <circle id="svg_9" fill="#ffffff" r="4.029" cy="17.54875" cx="10.11525"/>
+     <circle id="svg_10" fill="#ffffff" r="4.029" cy="36.14775" cx="10.11525"/>
+     <circle id="svg_11" fill="#ffffff" r="4.029" cy="54.74675" cx="10.11525"/>
+    </g>
+    <g id="svg_12"/>
+    <g id="svg_13"/>
+    <g id="svg_14"/>
+    <g id="svg_15"/>
+    <g id="svg_16"/>
+    <g id="svg_17"/>
+    <g id="svg_18"/>
+    <g id="svg_19"/>
+    <g id="svg_20"/>
+    <g id="svg_21"/>
+    <g id="svg_22"/>
+    <g id="svg_23"/>
+    <g id="svg_24"/>
+    <g id="svg_25"/>
+    <g id="svg_26"/>
+   </g>
+  </g>
+ </g>
+</svg>

@@ -4,7 +4,68 @@
       :lists="lists"
       :categories="categories"
       :currentListId="currentListId"
+      @addedList="addList"
+      @removedList="removeList"
+      @addedCategory="addCategory"
+      @removedCategory="removeCategory"
+      @logoutUser="logout"
+      @selectedList="selectList"
+      @refreshedData="refreshData"
+      @selectedCategory="selectCategory"
     /> 
+        <div class="list-content">
+      <div class="list-content-tasks-active" v-if="this.tasks">
+        <transition-group
+          name="fade"
+          enter-active-class="animated fadeInUp"
+          leave-active-class="animated fadeOutDown"
+        >
+          <ListItem
+            v-for="(task, index) in tasksFilteredActive"
+            :key="componentListItem + task.id"
+            :task="task"
+            :categories="categories"
+            :index="index"
+            @removedTask="removeTask"
+            @finishedEdit="finishedEdit"
+          />
+        </transition-group>
+      </div>
+      <div
+        class="list-content-tasks-completed"
+        v-if="this.tasks && tasksFilteredCompleted && tasksFilteredCompleted.length">
+        <p class="tasks-title">
+          Completed Tasks
+          <i
+            v-if="showCompletedTasks"
+            class="material-icons list-content-tasks-completed-icon"
+            @click="showCompletedTasks = !showCompletedTasks"
+            >arrow_drop_down</i
+          >
+          <i
+            v-else
+            class="material-icons list-content-tasks-completed-icon"
+            @click="showCompletedTasks = !showCompletedTasks"
+            >arrow_drop_up</i
+          >
+        </p>
+        <ListItem
+          v-if="showCompletedTasks"
+          v-for="(task, index) in tasksFilteredCompleted"
+          :key="componentListItem + task.id"
+          :task="task"
+          :categories="categories"
+          :index="index"
+          @removedTask="removeTask"
+          @finishedEdit="finishedEdit"
+        />
+        <ListFooter
+          @addedTask="addTask"
+          :categories="categories"
+          :suggestions="getSuggestions"
+          />
+      </div>
+    </div>
   </div>
 </template>
 
