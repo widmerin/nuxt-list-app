@@ -73,7 +73,9 @@
 
 
 import { createClient } from '@supabase/supabase-js'
-const supabase = createClient(process.env.SUPABASE_API_URL, process.env.SUPABASE_APP_KEY) 
+const supabaseUrl = process.env.GRIDSOME_API_URL
+const supabaseKey = process.env.GRIDSOME_APP_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
  
 import {
   createCategory,
@@ -105,7 +107,7 @@ export default {
       tasks: [],
     };
   },
-  mounted() {
+  async mounted() {
     this.supscripeTaskUpdate()
     this.subscribeTaskInsert()
     this.subscribeTaskDelete()
@@ -243,6 +245,7 @@ export default {
           this.tasks[index].title = payload.new.title
           this.tasks[index].category = payload.new.category
           this.tasks[index].completed = payload.new.completed
+          console.log('subscribe insert')
         })
         .subscribe()
     },
@@ -251,6 +254,7 @@ export default {
         .from('Tasks')
         .on('INSERT', payload => {
           this.tasks.push(payload.new)
+          console.log('subscribe insert')
         })
         .subscribe()
     },
@@ -260,6 +264,8 @@ export default {
         .on('DELETE', payload => {
           let index = this.tasks.map((item) => item.id).indexOf(payload.old.id)
           this.tasks.splice(index, 1);
+          console.log('subscribe delete')
+
         })
         .subscribe()
     },
