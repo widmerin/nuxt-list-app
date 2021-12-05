@@ -60,6 +60,7 @@ async function createTask(task) {
 }
 
 async function getLists() {
+  console.log("get Lists");
   let { data: Lists } = await supabase.from('Lists').select('*');
   return Lists
 }

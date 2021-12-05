@@ -1,48 +1,50 @@
 <template>
   <div id="app" class="container">
-      <div v-if="!currentUser" >
-        <div class="login">
-          <h1>The List</h1>
-          <p>
-            <button class="waves-effect waves-light btn" @click="triggerNetlifyIdentityAction('login')">Log In</button>
-          </p>
-        </div>
+    <div v-if="!currentUser">
+      <div class="login">
+        <h1>The List</h1>
+        <p>
+          <button
+            class="waves-effect waves-light btn"
+            @click="triggerNetlifyIdentityAction('login')"
+          >
+            Log In
+          </button>
+        </p>
       </div>
-      <div v-else>
-        <List @logout="triggerNetlifyIdentityAction" />
-      </div>
+    </div>
+    <div v-else>
+      <List @logout="triggerNetlifyIdentityAction" />
     </div>
   </div>
 </template>
 <script>
-
-
 export default {
   mounted() {
-    window.netlifyIdentity = require('netlify-identity-widget')
+    window.netlifyIdentity = require("netlify-identity-widget");
     netlifyIdentity.init({
-      APIUrl: process.env.NUXT_APP_KEY
-    })
-    this.currentUser = netlifyIdentity.currentUser()
+      APIUrl: process.env.NUXT_APP_KEY,
+    });
+    this.currentUser = netlifyIdentity.currentUser();
   },
   data() {
     return {
       currentUser: null,
-    }
+    };
   },
 
   methods: {
     triggerNetlifyIdentityAction(action) {
       if (action == "login" || action == "signup") {
         netlifyIdentity.open(action);
-        netlifyIdentity.on(action, user => {
+        netlifyIdentity.on(action, (user) => {
           this.currentUser = {
             username: user.user_metadata.full_name,
             email: user.email,
             access_token: user.token.access_token,
             expires_at: user.token.expires_at,
             refresh_token: user.token.refresh_token,
-            token_type: user.token.token_type
+            token_type: user.token.token_type,
           };
           netlifyIdentity.close();
         });
@@ -50,8 +52,8 @@ export default {
         this.currentUser = null;
         netlifyIdentity.logout();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
@@ -67,7 +69,7 @@ body {
   background-color: #48426d;
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #424242;
@@ -77,7 +79,7 @@ body {
   padding-bottom: 50px;
 }
 .login {
-  color: #FFF;
+  color: #fff;
   text-align: center;
   display: flex;
   align-items: center;

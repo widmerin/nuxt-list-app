@@ -1,77 +1,15 @@
 <template>
   <div class="list">
-    <!-- <list-header
+    <ListHeader
       :lists="lists"
       :categories="categories"
       :currentListId="currentListId"
-      @addedList="addList"
-      @removedList="removeList"
-      @addedCategory="addCategory"
-      @removedCategory="removeCategory"
-      @logoutUser="logout"
-      @selectedList="selectList"
-      @refreshedData="refreshData"
-      @selectedCategory="selectCategory"
-    ></list-header> -->
-    <div class="list-content">
-      <div class="list-content-tasks-active" v-if="this.tasks">
-        <!-- <transition-group
-          name="fade"
-          enter-active-class="animated fadeInUp"
-          leave-active-class="animated fadeOutDown"
-        >
-          <list-item
-            v-for="(task, index) in tasksFilteredActive"
-            :key="componentListItem + task.id"
-            :task="task"
-            :categories="categories"
-            :index="index"
-            @removedTask="removeTask"
-            @finishedEdit="finishedEdit"
-          ></list-item>
-        </transition-group> -->
-      </div>
-      <div
-        class="list-content-tasks-completed"
-        v-if="this.tasks && tasksFilteredCompleted && tasksFilteredCompleted.length">
-        <p class="tasks-title">
-          Completed Tasks
-          <i
-            v-if="showCompletedTasks"
-            class="material-icons list-content-tasks-completed-icon"
-            @click="showCompletedTasks = !showCompletedTasks"
-            >arrow_drop_down</i
-          >
-          <i
-            v-else
-            class="material-icons list-content-tasks-completed-icon"
-            @click="showCompletedTasks = !showCompletedTasks"
-            >arrow_drop_up</i
-          >
-        </p>
-        <!-- <list-item
-          v-if="showCompletedTasks"
-          v-for="(task, index) in tasksFilteredCompleted"
-          :key="componentListItem + task.id"
-          :task="task"
-          :categories="categories"
-          :index="index"
-          @removedTask="removeTask"
-          @finishedEdit="finishedEdit"
-        ></list-item> -->
-      </div>
-    </div>
-    <!-- <list-footer
-      @addedTask="addTask"
-      :categories="categories"
-      :suggestions="getSuggestions"
-    ></list-footer> -->
+    /> 
   </div>
 </template>
 
 <script>
 
-import draggable from "vuedraggable";
 
 import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.SUPABASE_API_URL
@@ -92,9 +30,6 @@ import {
 } from "@/helpers/supabase";
 
 export default {
-  components: {
-    draggable,
-  },
   name: "List",
   data() {
     return {
@@ -117,6 +52,7 @@ export default {
     this.subscribeTaskDelete()
   },
   computed: {
+    
     tasksFilteredActive: {
       get() {
         return this.filterTasksByCategory(
