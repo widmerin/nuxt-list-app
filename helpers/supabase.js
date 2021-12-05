@@ -14,7 +14,6 @@ async function createCategory(category) {
     console.log("created category" + JSON.stringify(task));
     return data
   } catch (err) {
-    alert('Error')
     console.error('Unknown problem inserting to db', err)
     return null
   }
@@ -33,7 +32,6 @@ async function createList(list) {
     console.log("created list" + JSON.stringify(list));
     return data
   } catch (err) {
-    alert('Error')
     console.error('Unknown problem inserting to db', err)
     return null
   }
@@ -58,7 +56,6 @@ async function createTask(task) {
 }
 
 async function getLists() {
-  console.log("get Lists");
   let { data: Lists } = await supabase.from('Lists').select('*');
   return Lists
 }
