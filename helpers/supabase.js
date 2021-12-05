@@ -1,10 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-const supabaseUrl = process.env.SUPABASE_API_URL
-const supabaseKey = process.env.SUPABASE_APP_KEY
-if(supabaseUrl && supabaseKey) {
-  const supabase = createClient(supabaseUrl, supabaseKey)
-}
-
+const supabase = createClient(process.env.SUPABASE_API_URL, process.env.SUPABASE_APP_KEY) 
 
 async function createCategory(category) {
   try {
