@@ -73,9 +73,7 @@
 
 
 import { createClient } from '@supabase/supabase-js'
-const supabaseUrl = process.env.GRIDSOME_API_URL
-const supabaseKey = process.env.GRIDSOME_APP_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabase = createClient(process.env.SUPABASE_API_URL, process.env.SUPABASE_APP_KEY) 
  
 import {
   createCategory,

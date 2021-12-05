@@ -1,5 +1,7 @@
 export default {
-  target: 'static',
+  //target: 'static',
+  ssr: false, // Disable Server Side rendering
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'nuxt_list',
@@ -23,6 +25,11 @@ export default {
     '~node_modules/materialize-css/dist/css/materialize.css',
     '~node_modules/material-design-icons/iconfont/material-icons.css'
   ],
+
+  env: {
+    SUPABASE_API_URL: process.env.SUPABASE_API_URL || '',
+    SUPABASE_APP_KEY: process.env.SUPABASE_APP_KEY || '',
+  },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
