@@ -1,10 +1,10 @@
 export default {
-  //target: 'static',
-  ssr: false, // Disable Server Side rendering
+  target: 'static',
+  ssr: true,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'nuxt_list',
+    title: 'Nuxt List',
     htmlAttrs: {
       lang: 'en'
     },
@@ -40,7 +40,8 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/pwa',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
