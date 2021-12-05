@@ -9,9 +9,19 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.25.2",
+    "axios": "^0.24.0",
     "core-js": "^3.15.1",
+    "dotenv": "^10.0.0",
     "netlify": "^8.0.4",
     "netlify-identity-widget": "^1.9.2",
-    "nuxt": "^2.15.7"
+    "nuxt": "^2.15.7",
+    "supabase": "^0.5.0",
+    "vuedraggable": "^2.24.3"
+  },
+  "devDependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
+    "sass": "^1.43.4",
+    "sass-loader": "^10.2.0"
   }
 }

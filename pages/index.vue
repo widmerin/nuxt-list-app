@@ -9,6 +9,7 @@
         </div>
       </div>
       <div v-else>
+        <List @logout="triggerNetlifyIdentityAction" />
       </div>
     </div>
   </div>
@@ -20,12 +21,9 @@ export default {
   mounted() {
     window.netlifyIdentity = require('netlify-identity-widget')
     netlifyIdentity.init({
-      APIUrl: "https://jovial-mccarthy-2c45ae.netlify.app/.netlify/identity"
+      APIUrl: process.env.NUXT_APP_KEY
     })
     this.currentUser = netlifyIdentity.currentUser()
-  },
-  metaInfo: {
-    title: 'The List'
   },
   data() {
     return {
