@@ -51,6 +51,7 @@ export default {
   pwa: {
     manifest: {
       name: 'List App',
+      short_name: 'List App',
       lang: 'de'
     },
     icon: {
