@@ -57,7 +57,7 @@ export default {
       background_color: '#46406d'
     },
     icon: {
-      fileName: 'app-icon.png',
+      fileName: 'list-app-icon.png',
       purpose: "maskable"
 
     },
