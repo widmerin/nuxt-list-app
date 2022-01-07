@@ -48,6 +48,19 @@ export default {
   modules: [
   ],
 
+  pwa: {
+    manifest: {
+      name: 'List App',
+      lang: 'de'
+    },
+    icon: {
+      fileName: 'app-icon.png',
+      purpose: "maskable"
+
+    },
+
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
