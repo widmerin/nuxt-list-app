@@ -51,8 +51,8 @@ export default {
 
   pwa: {
     manifest: {
-      name: 'List App',
-      short_name: 'List App',
+      name: 'The List',
+      short_name: 'The List',
       lang: 'de',
       background_color: '#46406d'
     },
@@ -61,7 +61,10 @@ export default {
       purpose: "maskable"
 
     },
-
+    workbox: {
+      enabled: true,
+      offline: true
+    }
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
