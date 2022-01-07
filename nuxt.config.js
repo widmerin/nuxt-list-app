@@ -53,7 +53,8 @@ export default {
     manifest: {
       name: 'List App',
       short_name: 'List App',
-      lang: 'de'
+      lang: 'de',
+      background_color: '#46406d'
     },
     icon: {
       fileName: 'app-icon.png',
