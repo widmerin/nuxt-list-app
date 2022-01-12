@@ -94,13 +94,15 @@
           v-model="newItem"
           v-on:keyup.enter="addItem"
         />
-        <button class="btn" @click="addItem">Add {{ modalType }}</button>
+        <button v-if="modalType == 'Category'" class="btn" @click="addCategory">Add {{ modalType }}</button>
+        <button v-if="modalType == 'List'" class="btn" @click="addList">Add {{ modalType }}</button>
+
       </div>
     </div>
   </header>
 </template>
 <script>
-import { getReferenceId } from "@/helpers/supabase";
+
 export default {
 
   props: {
@@ -129,6 +131,22 @@ export default {
     };
   },
   methods: {
+    addCategory() {
+      if (this.newItem.trim().length == 0) {
+        return;
+      }
+      this.$dataApi.createCategory(this.newItem )
+      this.newItem = "";
+      this.showModal = false;
+    },
+    addList() {
+      if (this.newItem.trim().length == 0) {
+        return;
+      }
+      this.$dataApi.createList(this.newItem)
+      this.newItem = "";
+      this.showModal = false;
+    },
     openModal(type) {
       if (type == "lists") {
         this.modalData = this.lists;
@@ -142,23 +160,11 @@ export default {
       this.showMenuDropdown = false;
       this.showCategoryDropdown = false;
     },
-    addItem() {
-      if (this.newItem.trim().length == 0) {
-        return;
-      }
-      if (this.modalType == "List") {
-        this.$emit("addedList", this.newItem);
-      } else if (this.modalType == "Category") {
-        this.$emit("addedCategory", this.newItem);
-      }
-      this.newItem = "";
-      this.showModal = false;
-    },
     removeItem(id, index) {
       if (this.modalType == "List") {
         this.$emit("removedList", id, index);
       } else if (this.modalType == "Category") {
-        this.$emit("removedCategory", id, index);
+        this.$dataApi.deleteCategory(id)
       }
     },
     logout() {

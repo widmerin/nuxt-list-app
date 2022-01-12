@@ -54,6 +54,11 @@ export default {
       type: Array,
       required: true,
     },
+    currentListId: {
+      type: Number,
+      required: true,
+    },
+
   },
   data() {
     return {
@@ -76,7 +81,15 @@ export default {
       if (this.newTask.trim().length == 0) {
         return;
       }
-      this.$emit("addedTask", this.newTask, this.newCategory);
+       const data = {
+          title: this.newTask,
+          list: this.currentListId,
+          completed: false,
+          category:  this.newCategory ?  this.newCategory : null
+      }
+  
+      this.$dataApi.createTask(data)
+    
       this.newTask = "";
       this.newCategory = "";
       this.showModal = false;

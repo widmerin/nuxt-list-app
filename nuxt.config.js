@@ -31,10 +31,9 @@ export default {
     SUPABASE_API_URL: process.env.SUPABASE_API_URL || '',
     SUPABASE_APP_KEY: process.env.SUPABASE_APP_KEY || '',
   },
-
+  
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  plugins: ['~/plugins/dataApi.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -62,8 +61,8 @@ export default {
 
     },
     workbox: {
-      enabled: true,
-      offline: true
+      enabled: false,
+      offline: false
     }
   },
 

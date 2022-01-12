@@ -86,17 +86,15 @@ export default {
       if (this.title.trim() == "") {
         this.title = this.beforeEditCache;
       }
-      this.editing = false;
-      this.editCategory = false;
-      this.$emit("finishedEdit", {
-        task: {
+      const task = {
           id: this.task.id,
           title: this.title,
           completed: this.completed,
           category: this.task.category,
-        },
-        id: this.task.id,
-      });
+      }
+      this.$dataApi.updateTask(task)
+      this.editing = false;
+      this.editCategory = false;
     },
     editTask() {
       this.beforeEditCache = this.title;
@@ -113,7 +111,7 @@ export default {
       }
     },
     removeTask() {
-      this.$emit("removedTask", this.id);
+      this.$dataApi.deleteTask(this.id);
     },
   },
 };

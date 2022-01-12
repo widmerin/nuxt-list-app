@@ -4,10 +4,7 @@
       :lists="lists"
       :categories="categories"
       :currentListId="currentListId"
-      @addedList="addList"
       @removedList="removeList"
-      @addedCategory="addCategory"
-      @removedCategory="removeCategory"
       @logoutUser="logout"
       @selectedList="selectList"
       @refreshedData="refreshData"
@@ -26,8 +23,6 @@
             :task="task"
             :categories="categories"
             :index="index"
-            @removedTask="removeTask"
-            @finishedEdit="finishedEdit"
           />
         </transition-group>
       </div>
@@ -56,13 +51,12 @@
           :task="task"
           :categories="categories"
           :index="index"
-          @removedTask="removeTask"
-          @finishedEdit="finishedEdit"
         />
         <ListFooter
-          @addedTask="addTask"
           :categories="categories"
           :suggestions="getSuggestions"
+          :currentListId="currentListId"
+
           />
       </div>
     </div>
@@ -70,23 +64,7 @@
 </template>
 
 <script>
-
-
-import { createClient } from '@supabase/supabase-js'
-const supabase = createClient(process.env.SUPABASE_API_URL, process.env.SUPABASE_APP_KEY) 
  
-import {
-  createCategory,
-  createList,
-  createTask,
-  deleteCategory,
-  deleteList,
-  deleteTask,
-  getCategories,
-  getLists,
-  getTasks,
-  updateTask,
-} from "@/helpers/supabase";
 
 export default {
   name: "List",
@@ -105,11 +83,7 @@ export default {
       tasks: [],
     };
   },
-  async mounted() {
-    this.supscripeTaskUpdate()
-    this.subscribeTaskInsert()
-    this.subscribeTaskDelete()
-  },
+
   computed: {
     
     tasksFilteredActive: {
@@ -132,16 +106,12 @@ export default {
       return suggestions;
     },
   },
-  async created() {
-    this.loaded = true;
-    this.fetchData()
-  },
-  methods: {
-    async fetchData(){
-      this.lists = await getLists()
-      this.categories = await getCategories()
-      this.tasks = await getTasks()  
+  async fetch() {
+      this.lists = await this.$dataApi.getLists()
+      this.categories = await this.$dataApi.getCategories()
+      this.tasks = await this.$dataApi.getTasks()
     },
+  methods: {
     filterTasksByCategory: function (tasks) {
       if (this.currentCategory != 0) {
         return tasks.filter((task) => task.category == this.currentCategory);
@@ -157,13 +127,10 @@ export default {
     filterTasksCurrentList: function (tasks) {
       return tasks.filter((task) => task.list == this.currentListId);
     },
-    forceRerender() {
-      this.componentListItem += 1;
-    },
+
     selectList(id) {
       if (this.currentListId != id) {
         this.currentListId = id;
-        this.forceRerender();
       }
     },
     selectCategory(id) {
@@ -172,39 +139,6 @@ export default {
       } else {
         this.currentCategory = 0;
       }
-      this.forceRerender();
-    },
-    async addCategory(name) {
-      const data = {
-          name: name,
-      }
-      const newCategory = await createCategory(data)
-      this.categories.push(newCategory[0])
-    },
-
-    async addList(name) {
-      const data = {
-        name: name,
-      }
-      const newList = await createList(data)
-      this.lists.push(newList[0])
-    },
-
-    async addTask(title, category) {
-      const data = {
-          title: title,
-          list: this.currentListId,
-          completed: false,
-          category: category ? category : null
-      }
-  
-      const task = await createTask(data)
-      this.refreshData();
-    },
-
-    removeTask(id) {
-      // Delete Task in DB
-      deleteTask(id);
     },
     removeList(id, index) {
       // delete all tasks from removed list
@@ -213,20 +147,11 @@ export default {
       );
       removeTasks.forEach((task) => {
         console.log("delete" + task.id);
-        deleteTask(task.id);
+        this.$dataApi.deleteTask(task.id);
       });
-      deleteList(id);
+      this.$dataApi.deleteList(id)
+
       this.lists.splice(index, 1);
-    },
-    removeCategory(id, index) {
-      // remove category from all tasks
-      deleteCategory(id);
-      this.categories.splice(index, 1);
-    },
-    finishedEdit(data) {
-      // Update Task in DB
-      updateTask(data.task);
-      this.refreshData();
     },
     refreshData() {
       this.fetchData();
@@ -234,38 +159,6 @@ export default {
     },
     logout() {
       this.$emit("logout", "logout");
-    },
-    supscripeTaskUpdate() {
-      supabase
-        .from('Tasks')
-        .on('UPDATE', payload => {
-          let index = this.tasks.map((item) => item.id).indexOf(payload.new.id)
-          this.tasks[index].title = payload.new.title
-          this.tasks[index].category = payload.new.category
-          this.tasks[index].completed = payload.new.completed
-          console.log('subscribe insert')
-        })
-        .subscribe()
-    },
-    subscribeTaskInsert() {
-      supabase
-        .from('Tasks')
-        .on('INSERT', payload => {
-          this.tasks.push(payload.new)
-          console.log('subscribe insert')
-        })
-        .subscribe()
-    },
-    subscribeTaskDelete() {
-      supabase
-        .from('Tasks')
-        .on('DELETE', payload => {
-          let index = this.tasks.map((item) => item.id).indexOf(payload.old.id)
-          this.tasks.splice(index, 1);
-          console.log('subscribe delete')
-
-        })
-        .subscribe()
     },
   },
 };
