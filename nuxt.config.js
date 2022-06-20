@@ -38,33 +38,9 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-    '@nuxtjs/dotenv',
-    '@nuxtjs/pwa',
-  ],
-
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
   ],
-
-  pwa: {
-    manifest: {
-      name: 'The List',
-      short_name: 'The List',
-      lang: 'de',
-      background_color: '#46406d'
-    },
-    icon: {
-      fileName: 'list-app-icon.png',
-      purpose: "maskable"
-
-    },
-    workbox: {
-      enabled: false,
-      offline: false
-    }
-  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
