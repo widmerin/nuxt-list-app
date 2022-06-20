@@ -54,13 +54,15 @@
           :index="index"
           @refreshedData="refreshData"
         />
-        <ListFooter
+        
+
+      </div>
+      <ListFooter
           :categories="categories"
           :suggestions="getSuggestions"
           :currentListId="currentListId"
           @refreshedData="refreshData"
           />
-      </div>
     </div>
   </div>
 </template>
