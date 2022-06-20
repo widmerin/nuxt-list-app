@@ -90,7 +90,7 @@ export default {
           id: this.task.id,
           title: this.title,
           completed: this.completed,
-          category: this.task.category,
+          category: this.task.category ?  this.task.category : null,
       }
       this.$dataApi.updateTask(task)
       this.editing = false;
