@@ -95,6 +95,7 @@ export default {
       this.$dataApi.updateTask(task)
       this.editing = false;
       this.editCategory = false;
+      this.$emit("refreshedData");
     },
     editTask() {
       this.beforeEditCache = this.title;
@@ -112,6 +113,7 @@ export default {
     },
     removeTask() {
       this.$dataApi.deleteTask(this.id);
+       this.$emit("refreshedData");
     },
   },
 };

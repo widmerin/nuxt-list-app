@@ -93,6 +93,7 @@ export default {
       this.newTask = "";
       this.newCategory = "";
       this.showModal = false;
+      this.$emit("refreshedData");
     },
     input(value) {
       this.newTask = value;

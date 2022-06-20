@@ -19,10 +19,11 @@
         >
           <ListItem
             v-for="(task, index) in tasksFilteredActive"
-            :key="componentListItem + task.id"
+            :key="componentListItem + task.category + task.id"
             :task="task"
             :categories="categories"
             :index="index"
+            @refreshedData="refreshData"
           />
         </transition-group>
       </div>
@@ -51,12 +52,13 @@
           :task="task"
           :categories="categories"
           :index="index"
+          @refreshedData="refreshData"
         />
         <ListFooter
           :categories="categories"
           :suggestions="getSuggestions"
           :currentListId="currentListId"
-
+          @refreshedData="refreshData"
           />
       </div>
     </div>
@@ -112,6 +114,10 @@ export default {
       this.tasks = await this.$dataApi.getTasks()
     },
   methods: {
+    refresh() {
+      console.log("refresh")
+      this.$fetch()
+    },
     filterTasksByCategory: function (tasks) {
       if (this.currentCategory != 0) {
         return tasks.filter((task) => task.category == this.currentCategory);
@@ -154,7 +160,7 @@ export default {
       this.lists.splice(index, 1);
     },
     refreshData() {
-      this.fetchData();
+      this.refresh();
       console.log("refresh data");
     },
     logout() {

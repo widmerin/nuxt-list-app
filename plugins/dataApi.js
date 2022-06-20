@@ -49,7 +49,6 @@ export default function (context, inject) {
     }
 
     async function createTask(data) {
-      console.log("new task")
       create('Tasks', data)
     }
 
@@ -70,7 +69,6 @@ export default function (context, inject) {
           console.error('There was an error inserting', error)
           return null
         }
-        console.log("created " + JSON.stringify(data));
         return data
       } catch (err) {
         console.error('Unknown problem inserting to db', err)
@@ -104,7 +102,6 @@ export default function (context, inject) {
 
     async function updateTask(task) {
       try {
-        console.log(data)
         const { data, error } = await supabase
         .from('Tasks')
         .update(task)
@@ -114,7 +111,6 @@ export default function (context, inject) {
         console.error('There was an error updateing task', error)
         return null
       }
-      console.log("updated task" + JSON.stringify(task));
       return data
     } catch (err) {
       console.error('Unknown problem inserting to db', err)
