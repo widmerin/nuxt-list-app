@@ -1,6 +1,5 @@
-export default {
-  target: 'static',
-  ssr: true,
+// https://nuxt.com/docs/api/configuration/nuxt-config
+export default defineNuxtConfig({
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -22,9 +21,9 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '~assets/css/main.scss',
-    '~node_modules/materialize-css/dist/css/materialize.css',
-    '~node_modules/material-design-icons/iconfont/material-icons.css'
+    '/assets/css/main.scss',
+    '/node_modules/materialize-css/dist/css/materialize.css',
+    '/node_modules/material-design-icons/iconfont/material-icons.css'
   ],
 
   env: {
@@ -33,7 +32,7 @@ export default {
   },
   
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/dataApi.js'],
+//  plugins: ['~/plugins/dataApi.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -45,4 +44,4 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
-}
+})

@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="container">
-    <div v-if="!currentUser">
+    <h2 style="color:white">test</h2>
+<!--     <div v-if="!currentUser">
       <div class="login">
         <h1>The List</h1>
         <p>
@@ -15,17 +16,17 @@
     </div>
     <div v-else>
       <List @logout="triggerNetlifyIdentityAction" />
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 export default {
   mounted() {
-    window.netlifyIdentity = require("netlify-identity-widget");
+/*     window.netlifyIdentity = require("netlify-identity-widget");
     netlifyIdentity.init({
       APIUrl: process.env.NUXT_APP_KEY,
     });
-    this.currentUser = netlifyIdentity.currentUser();
+    this.currentUser = netlifyIdentity.currentUser(); */
   },
   data() {
     return {
