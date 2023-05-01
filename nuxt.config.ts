@@ -26,9 +26,10 @@ export default defineNuxtConfig({
     '/node_modules/material-design-icons/iconfont/material-icons.css'
   ],
 
-  env: {
+  runtimeConfig: {
     SUPABASE_API_URL: process.env.SUPABASE_API_URL || '',
     SUPABASE_APP_KEY: process.env.SUPABASE_APP_KEY || '',
+    NETLIFY_IDENTITY_API: process.env.NETLIFY_IDENTITY_API || '',
   },
   
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

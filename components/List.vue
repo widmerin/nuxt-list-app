@@ -10,7 +10,7 @@
       @refreshedData="refreshData"
       @selectedCategory="selectCategory"
     /> 
-        <div class="list-content">
+      <div class="list-content">
       <div class="list-content-tasks-active" v-if="this.tasks">
         <transition-group
           name="fade"
