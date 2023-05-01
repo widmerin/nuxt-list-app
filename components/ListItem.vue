@@ -96,7 +96,6 @@ export default {
       await $updateTask(task)
       this.editing = false;
       this.editCategory = false;
-
     },
     editTask() {
       this.beforeEditCache = this.title;

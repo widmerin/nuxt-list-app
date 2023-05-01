@@ -76,7 +76,6 @@
     'postgres_changes',
     { event: '*', schema: 'public', table: 'Tasks' },
     (payload) => {
-      console.log('Change received!', payload)
       fetchTasks()
 
     }
