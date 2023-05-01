@@ -40,7 +40,7 @@
         </p>
         <ListItem
           v-if="showCompletedTasks"
-          v-for="(task, index) in filteredTasks"
+          v-for="(task, index) in completedTasks"
           :key="componentListItem + task.id"
           :task="task"
           :categories="categories"
@@ -111,7 +111,6 @@
 
 
     onMounted(async () =>{
-      console.log("onMount")
       fetchCategoriesList()
       fetchTasks()
 
