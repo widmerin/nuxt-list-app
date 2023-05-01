@@ -10,7 +10,6 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^1.25.2",
     "core-js": "^3.15.1",
     "dotenv": "^10.0.0",
     "material-design-icons": "^3.0.1",
@@ -21,6 +20,7 @@
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
+    "@nuxtjs/supabase": "^0.3.5",
     "nuxt": "^3.4.3",
     "sass": "^1.43.4",
     "sass-loader": "^10.2.0"
