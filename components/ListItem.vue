@@ -97,6 +97,7 @@ export default {
       this.editing = false;
       this.editCategory = false;
       this.$emit("refreshedData");
+
     },
     editTask() {
       this.beforeEditCache = this.title;

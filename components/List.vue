@@ -18,7 +18,7 @@
           leave-active-class="animated fadeOutDown"
         >
           <ListItem
-           v-for="(task, index) in tasksFilteredActive"
+           v-for="(task, index) in openTasks"
             :key="componentListItem + task.category + task.id"
             :task="task"
             :categories="categories"
@@ -29,7 +29,7 @@
       </div>
       <div
         class="list-content-tasks-completed"
-        v-if="this.tasks && tasksFilteredCompleted && tasksFilteredCompleted.length">
+        v-if="completedTasks.length > 0">
         <p class="tasks-title">
           Completed Tasks
           <i
@@ -46,8 +46,8 @@
           >
         </p>
         <ListItem
-          v-if="showCompletedTasks"
-          v-for="(task, index) in tasksFilteredCompleted"
+          v-if = "showCompletedTasks"
+          v-for="(task, index) in completedTasks"
           :key="componentListItem + task.id"
           :task="task"
           :categories="categories"
@@ -85,6 +85,8 @@ export default {
       lists: [],
       categories: [],
       tasks: [],
+      completedTasks: [],
+      openTasks: [],
     };
   },
 
@@ -93,40 +95,44 @@ export default {
     tasksFilteredActive: {
       get() {
         return this.filterTasksByCategory(
-          this.filterTasksCurrentList(this.filterTasksActive(this.tasks))
+        //  this.filterTasksCurrentList(this.filterTasksActive(this.tasks))
         );
       },
     },
     tasksFilteredCompleted() {
-      return this.filterTasksCurrentList(this.filterTasksCompleted(this.tasks));
+     // return this.filterTasksCurrentList(this.filterTasksCompleted(this.tasks));
     },
     getSuggestions() {
       let suggestions = [];
-       this.tasksFilteredCompleted.forEach((task) => {
+/*        this.tasksFilteredCompleted.forEach((task) => {
         if (!suggestions.includes(task.title)) {
           suggestions.push(task.title);
         }
-      });
+      }); */
       return suggestions;
     },
   },
 
  async mounted() {
-
-    const { $fetchData } = useNuxtApp()
-    this.lists = await $fetchData("Lists")
-    this.categories = await $fetchData("Categories")
-    this.tasks = await $fetchData("Tasks")
+    this.refresh()
+    this.refreshTasks()
   },
   methods: {
     async refresh() {
-      console.log("refresh data")
+      console.log("refresh")
       const { $fetchData } = useNuxtApp()
       this.lists = await $fetchData("Lists")
       this.categories = await $fetchData("Categories")
       this.tasks = await $fetchData("Tasks")
+
     },
-    filterTasksByCategory: function (tasks) {
+    async refreshTasks() {
+      const { $fetchTasks, $fetchCompletedTasks } = useNuxtApp()
+      this.openTasks = await $fetchTasks(this.currentListId)
+      this.completedTasks = await $fetchCompletedTasks(this.currentListId)
+      console.log(this.completedTasks)
+    },
+  /*  filterTasksByCategory: function (tasks) {
       if (this.currentCategory != 0) {
         return tasks.filter((task) => task.category == this.currentCategory);
       }
@@ -140,12 +146,13 @@ export default {
     },
     filterTasksCurrentList: function (tasks) {
       return tasks.filter((task) => task.list == this.currentListId);
-    },
+    },*/
 
     selectList(id) {
       if (this.currentListId != id) {
         this.currentListId = id;
       }
+      this.refreshTasks()
     },
     selectCategory(id) {
       if (id > 0) {

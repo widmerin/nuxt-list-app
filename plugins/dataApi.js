@@ -14,10 +14,30 @@ export default defineNuxtPlugin(nuxtApp => {
       }
     }
 
-    async function fetchTasks(completed = FALSE){
+    async function fetchTasks(list){
+      if(list === undefined) {
+        list = 1
+      }
 
       try {
-        const { data } = await supabase.from("Tasks").select('*').eq('completed', completed);
+        const { data } = await supabase.from("Tasks").select('*').eq('list', list).eq('completed', 'false').order('created')
+        if (data && data.length > 0) {
+          return data
+        }
+        return []
+      }
+      catch (err) {
+        console.error('Error Fetching data', err)
+      }
+    }
+
+
+    async function fetchCompletedTasks(list){
+      if(list === undefined) {
+        list = 1
+      }
+      try {
+        const { data } = await supabase.from("Tasks").select('*').eq('list', list).eq('completed', 'true').limit('10').order('created', { ascending: false })
         if (data && data.length > 0) {
           return data
         }
@@ -111,6 +131,7 @@ export default defineNuxtPlugin(nuxtApp => {
         provide: {
             fetchData,
             fetchTasks,
+            fetchCompletedTasks,
             createCategory,
             deleteCategory,
             createList,
