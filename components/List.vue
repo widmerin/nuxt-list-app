@@ -7,11 +7,11 @@
       @removedList="removeList"
       @logoutUser="logout"
       @selectedList="selectList"
-      @refreshedData="refreshData"
+      @refreshedData="refetchData"
       @selectedCategory="selectCategory"
     /> 
         <div class="list-content">
-      <div class="list-content-tasks-active" v-if="this.tasks">
+      <div class="list-content-tasks-active" v-if="this.openTasks">
         <transition-group
           name="fade"
           enter-active-class="animated fadeInUp"
@@ -23,7 +23,7 @@
             :task="task"
             :categories="categories"
             :index="index"
-            @refreshedData="refreshData"
+            @refreshedData="refetchTaskData"
           />
         </transition-group>
       </div>
@@ -46,13 +46,13 @@
           >
         </p>
         <ListItem
-          v-if = "showCompletedTasks"
+          v-if="showCompletedTasks"
           v-for="(task, index) in completedTasks"
           :key="componentListItem + task.id"
           :task="task"
           :categories="categories"
           :index="index"
-          @refreshedData="refreshData"
+          @refreshedData="refetchTaskData"
         />
         
 
@@ -61,7 +61,7 @@
           :categories="categories"
           :suggestions="getSuggestions"
           :currentListId="currentListId"
-          @refreshedData="refreshData"
+          @refreshedData="refetchTaskData"
           />
     </div>
   </div>
@@ -114,19 +114,18 @@ export default {
   },
 
  async mounted() {
-    this.refresh()
-    this.refreshTasks()
+    this.fetchCategoriesList()
+    this.fetchTasks()
   },
   methods: {
-    async refresh() {
-      console.log("refresh")
+    async fetchCategoriesList() {
+      console.log("refresh fetchCategoriesList")
       const { $fetchData } = useNuxtApp()
       this.lists = await $fetchData("Lists")
       this.categories = await $fetchData("Categories")
-      this.tasks = await $fetchData("Tasks")
 
     },
-    async refreshTasks() {
+    async fetchTasks() {
       const { $fetchTasks, $fetchCompletedTasks } = useNuxtApp()
       this.openTasks = await $fetchTasks(this.currentListId)
       this.completedTasks = await $fetchCompletedTasks(this.currentListId)
@@ -152,7 +151,7 @@ export default {
       if (this.currentListId != id) {
         this.currentListId = id;
       }
-      this.refreshTasks()
+      this.fetchTasks()
     },
     selectCategory(id) {
       if (id > 0) {
@@ -163,7 +162,7 @@ export default {
     },
     async removeList(id, index) {
       // delete all tasks from removed list
-      let removeTasks = this.tasks.filter(
+      let removeTasks = this.openTasks.filter(
         (task) => task.list == id
       );
        removeTasks.forEach((task) => {
@@ -177,9 +176,14 @@ export default {
 
       this.lists.splice(index, 1);
     },
-    refreshData() {
-      this.refresh();
-      console.log("refresh data");
+    refetchData() {
+      this.fetchTasks();
+      this.fetchCategoriesList();
+      console.log("refresh all data");
+    },
+    refetchTaskData() {
+      this.fetchTasks();
+      console.log("refresh task data");
     },
     logout() {
       this.$emit("logout", "logout");
