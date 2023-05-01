@@ -14,12 +14,20 @@ yarn install
 npm install
 
 # pnpm
-pnpm install --shamefully-hoist
+pnpm install
 ```
+##  ENV Varibales
+Set ENV Varibale in the .env file for supabase and netlify identity
+```
+SUPABASE_URL=
+SUPABASE_KEY=
+NETLIFY_IDENTITY_API=
+```
+
 
 ## Development Server
 
-Start the development server on http://localhost:3000
+Start the development server on `http://localhost:3000`
 
 ```bash
 npm run dev
@@ -39,4 +47,12 @@ Locally preview production build:
 npm run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Build with netlify cli
+
+```bash
+ netlify dev
+```
+
+```bash
+ netlify build
+```
