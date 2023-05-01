@@ -31,18 +31,7 @@ export default defineNuxtConfig({
     SUPABASE_APP_KEY: process.env.SUPABASE_APP_KEY || '',
     NETLIFY_IDENTITY_API: process.env.NETLIFY_IDENTITY_API || '',
   },
-  
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-//  plugins: ['~/plugins/dataApi.js'],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  modules: ['@nuxtjs/supabase'],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
-  //modules: ['@nuxtjs/supabase'],
-
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  }
 })

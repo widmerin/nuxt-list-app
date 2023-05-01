@@ -10,7 +10,7 @@
       @refreshedData="refreshData"
       @selectedCategory="selectCategory"
     /> 
-      <div class="list-content">
+        <div class="list-content">
       <div class="list-content-tasks-active" v-if="this.tasks">
         <transition-group
           name="fade"
@@ -18,7 +18,7 @@
           leave-active-class="animated fadeOutDown"
         >
           <ListItem
-            v-for="(task, index) in tasksFilteredActive"
+           v-for="(task, index) in tasksFilteredActive"
             :key="componentListItem + task.category + task.id"
             :task="task"
             :categories="categories"
@@ -102,7 +102,7 @@ export default {
     },
     getSuggestions() {
       let suggestions = [];
-      this.tasksFilteredCompleted.forEach((task) => {
+       this.tasksFilteredCompleted.forEach((task) => {
         if (!suggestions.includes(task.title)) {
           suggestions.push(task.title);
         }
@@ -110,15 +110,21 @@ export default {
       return suggestions;
     },
   },
-  async fetch() {
-      this.lists = await this.$dataApi.getLists()
-      this.categories = await this.$dataApi.getCategories()
-      this.tasks = await this.$dataApi.getTasks()
-    },
+
+ async mounted() {
+
+    const { $fetchData } = useNuxtApp()
+    this.lists = await $fetchData("Lists")
+    this.categories = await $fetchData("Categories")
+    this.tasks = await $fetchData("Tasks")
+  },
   methods: {
-    refresh() {
-      console.log("refresh")
-      this.$fetch()
+    async refresh() {
+      console.log("refresh data")
+      const { $fetchData } = useNuxtApp()
+      this.lists = await $fetchData("Lists")
+      this.categories = await $fetchData("Categories")
+      this.tasks = await $fetchData("Tasks")
     },
     filterTasksByCategory: function (tasks) {
       if (this.currentCategory != 0) {
@@ -148,16 +154,19 @@ export default {
         this.currentCategory = 0;
       }
     },
-    removeList(id, index) {
+    async removeList(id, index) {
       // delete all tasks from removed list
       let removeTasks = this.tasks.filter(
         (task) => task.list == id
       );
-      removeTasks.forEach((task) => {
+       removeTasks.forEach((task) => {
         console.log("delete" + task.id);
-        this.$dataApi.deleteTask(task.id);
+        const { $deleteTask } = useNuxtApp()
+        $deleteTask(task.id);
       });
-      this.$dataApi.deleteList(id)
+
+      const { $deleteList } = useNuxtApp()
+      await $deleteList(id)
 
       this.lists.splice(index, 1);
     },

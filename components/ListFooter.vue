@@ -77,7 +77,7 @@ export default {
     closeModal() {
       this.showModal = false;
     },
-    addTask() {
+    async addTask() {
       if (this.newTask.trim().length == 0) {
         return;
       }
@@ -87,8 +87,9 @@ export default {
           completed: false,
           category:  this.newCategory ?  this.newCategory : null
       }
-  
-      this.$dataApi.createTask(data)
+
+      const { $createTask } = useNuxtApp()
+      await $createTask(data)
     
       this.newTask = "";
       this.newCategory = "";

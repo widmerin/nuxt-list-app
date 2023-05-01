@@ -102,9 +102,7 @@
   </header>
 </template>
 <script>
-
 export default {
-
   props: {
     lists: {
       type: Array,
@@ -131,19 +129,22 @@ export default {
     };
   },
   methods: {
-    addCategory() {
+    async addCategory() {
       if (this.newItem.trim().length == 0) {
         return;
       }
-      this.$dataApi.createCategory(this.newItem )
+      const { $createCategory } = useNuxtApp()
+      await $createCategory(this.newItem )
       this.newItem = "";
       this.showModal = false;
     },
-    addList() {
+    async addList() {
       if (this.newItem.trim().length == 0) {
         return;
       }
-      this.$dataApi.createList(this.newItem)
+      const { $createList } = useNuxtApp()
+      
+      await $createList(this.newItem)
       this.newItem = "";
       this.showModal = false;
     },
@@ -160,11 +161,12 @@ export default {
       this.showMenuDropdown = false;
       this.showCategoryDropdown = false;
     },
-    removeItem(id, index) {
+    async removeItem(id, index) {
       if (this.modalType == "List") {
         this.$emit("removedList", id, index);
       } else if (this.modalType == "Category") {
-        this.$dataApi.deleteCategory(id)
+        const { $deleteCategory } = useNuxtApp()
+        await $deleteCategory(id)
       }
     },
     logout() {

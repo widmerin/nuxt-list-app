@@ -82,7 +82,7 @@ export default {
       this.editing = false;
       this.title = this.beforeEditCache;
     },
-    doneEdit() {
+    async doneEdit() {
       if (this.title.trim() == "") {
         this.title = this.beforeEditCache;
       }
@@ -92,7 +92,8 @@ export default {
           completed: this.completed,
           category: this.task.category ?  this.task.category : null,
       }
-      this.$dataApi.updateTask(task)
+      const { $updateTask } = useNuxtApp()
+      await $updateTask(task)
       this.editing = false;
       this.editCategory = false;
       this.$emit("refreshedData");
@@ -111,8 +112,9 @@ export default {
         }
       }
     },
-    removeTask() {
-      this.$dataApi.deleteTask(this.id);
+    async removeTask() {
+       const { $deleteTask } = useNuxtApp()
+       await $deleteTask(this.id)
        this.$emit("refreshedData");
     },
   },
