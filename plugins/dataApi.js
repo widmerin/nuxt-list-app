@@ -32,6 +32,23 @@ export default defineNuxtPlugin(nuxtApp => {
     }
 
 
+    async function fetchSuggestions(list){
+      if(list === undefined) {
+        list = 1
+      }
+
+      try {
+        const { data } = await supabase.from("Tasks").select('title').eq('list', list).limit(300).order('created', { ascending: false })
+        if (data && data.length > 0) {
+          return data
+        }
+        return []
+      }
+      catch (err) {
+        console.error('Error Fetching data', err)
+      }
+
+    }
     async function fetchCompletedTasks(list){
       if(list === undefined) {
         list = 1
@@ -134,6 +151,7 @@ export default defineNuxtPlugin(nuxtApp => {
         provide: {
             fetchData,
             fetchTasks,
+            fetchSuggestions,
             fetchCompletedTasks,
             createCategory,
             deleteCategory,

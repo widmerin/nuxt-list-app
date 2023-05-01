@@ -81,6 +81,7 @@ export default {
       tasks: [],
       completedTasks: [],
       openTasks: [],
+      suggestions: [],
     };
   },
 
@@ -93,27 +94,24 @@ export default {
       }
     },
     
-/*     tasksFilteredActive: {
-      get() {
-        return this.filterTasksByCategory(
-          this.filterTasksCurrentList(this.openTasks)
-        );
-      },
-    }, */
+
     getSuggestions() {
-      let suggestions = [];
-/*        this.tasksFilteredCompleted.forEach((task) => {
-        if (!suggestions.includes(task.title)) {
-          suggestions.push(task.title);
+      const uniqueArr = [];
+      this.suggestions.forEach(item => {
+        if (!uniqueArr.some(obj => obj.title.toLowerCase() === item.title.toLowerCase())) {
+          uniqueArr.push(item);
         }
-      }); */
-      return suggestions;
+      });
+      return uniqueArr;
     },
   },
 
  async mounted() {
     this.fetchCategoriesList()
     this.fetchTasks()
+
+    const { $fetchSuggestions } = useNuxtApp()
+    this.suggestions = await $fetchSuggestions()
   },
   methods: {
     async fetchCategoriesList() {

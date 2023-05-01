@@ -41,7 +41,7 @@ export default {
     filterResults() {
       // first uncapitalize all the things
       this.results = this.items.filter((item) => {
-        return item.toLowerCase().startsWith(this.search.toLowerCase());
+        return item.title.toLowerCase().startsWith(this.search.toLowerCase());
       });
     },
     setResult(result) {
@@ -122,7 +122,7 @@ export default {
         class="autocomplete-result"
         :class="{ 'is-active': i === arrowCounter }"
       >
-        {{ result }}
+        {{ result.title }}
       </li>
     </ul>
   </div>
