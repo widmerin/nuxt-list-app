@@ -116,7 +116,6 @@ export default {
     async removeTask() {
        const { $deleteTask } = useNuxtApp()
        await $deleteTask(this.id)
-       this.$emit("refreshedData");
     },
   },
 };

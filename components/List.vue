@@ -11,14 +11,13 @@
       @selectedCategory="selectCategory"
     /> 
         <div class="list-content">
-      <div class="list-content-tasks-active" v-if="this.openTasks">
+      <div class="list-content-tasks-active" v-if="openTasks">
           <ListItem
            v-for="(task, index) in filteredTasks"
             :key="task.id"
             :task="task"
             :categories="categories"
             :index="index"
-            @refreshedData="refetchTaskData"
           />
       </div>
       <div
@@ -46,7 +45,6 @@
           :task="task"
           :categories="categories"
           :index="index"
-          @refreshedData="refetchTaskData"
         />
         
 
@@ -55,107 +53,102 @@
           :categories="categories"
           :suggestions="getSuggestions"
           :currentListId="currentListId"
-          @refreshedData="refetchTaskData"
           />
     </div>
   </div>
 </template>
+<script setup>
+  const loaded = ref(false);
+    const componentListItem = ref(0);
+    const currentCategory = ref(0);
+    const currentListId = ref(1);
+    const showCompletedTasks = ref(false);
+    const lists = ref([]);
+    const categories = ref([]);
+    const completedTasks = ref([]);
+    const openTasks = ref([]);
+    const suggestions = ref([]);
 
-<script>
- 
+    const supabase = useSupabaseClient();
 
-export default {
-  name: "List",
-  data() {
-    return {
-      loaded: false,
-      componentListItem: 0,
-      newTask: "",
-      idForTask: 4,
-      currentCategory: 0,
-      currentListId: 1,
-      beforeEditCache: "",
-      showCompletedTasks: false,
-      lists: [],
-      categories: [],
-      tasks: [],
-      completedTasks: [],
-      openTasks: [],
-      suggestions: [],
-    };
-  },
+    const Tasks = supabase.channel('custom-all-channel')
+  .on(
+    'postgres_changes',
+    { event: '*', schema: 'public', table: 'Tasks' },
+    (payload) => {
+      console.log('Change received!', payload)
+      fetchTasks()
 
-  computed: {
-    filteredTasks() {
-      if (this.currentCategory === 0) {
-        return this.openTasks;
+    }
+  )
+  .subscribe()
+
+    const filteredTasks = computed(() => {
+      if (currentCategory.value === 0) {
+        return openTasks.value;
       } else {
-        return this.openTasks.filter((task) => task.category == this.currentCategory && task.list == this.currentListId);
+        return openTasks.value.filter(
+          (task) =>
+            task.category === currentCategory.value &&
+            task.list === currentListId.value
+        );
       }
-    },
-    
+    });
 
-    getSuggestions() {
+    const getSuggestions = computed(() => {
       const uniqueArr = [];
-      this.suggestions.forEach(item => {
-        if (!uniqueArr.some(obj => obj.title.toLowerCase() === item.title.toLowerCase())) {
+      suggestions.value.forEach((item) => {
+        if (
+          !uniqueArr.some(
+            (obj) =>
+              obj.title.toLowerCase() === item.title.toLowerCase()
+          )
+        ) {
           uniqueArr.push(item);
         }
       });
       return uniqueArr;
-    },
-  },
+    });
 
- async mounted() {
-    this.fetchCategoriesList()
-    this.fetchTasks()
 
-    const { $fetchSuggestions } = useNuxtApp()
-    this.suggestions = await $fetchSuggestions()
-  },
-  methods: {
-    async fetchCategoriesList() {
-      const { $fetchData } = useNuxtApp()
-      this.lists = await $fetchData("Lists")
-      this.categories = await $fetchData("Categories")
+    onMounted(async () =>{
+      console.log("onMount")
+      fetchCategoriesList()
+      fetchTasks()
 
-    },
-    async fetchTasks() {
-      const { $fetchTasks, $fetchCompletedTasks } = useNuxtApp()
-      this.openTasks = await $fetchTasks(this.currentListId)
-      this.completedTasks = await $fetchCompletedTasks(this.currentListId)
-    },
-    filterTasksByCategory: function (tasks) {
-      if (this.currentCategory != 0) {
-        return tasks.filter((task) => task.category == this.currentCategory && task.list == this.currentListId);
+      const { $fetchSuggestions } = useNuxtApp()
+      suggestions.value = await $fetchSuggestions()    
+    })
+    const fetchCategoriesList = async () => {
+      const { $fetchData } = useNuxtApp();
+      lists.value = await $fetchData("Lists");
+      categories.value = await $fetchData("Categories");
+    };
+
+    const fetchTasks = async () => {
+      const { $fetchTasks, $fetchCompletedTasks } = useNuxtApp();
+      openTasks.value = await $fetchTasks(currentListId.value);
+      completedTasks.value = await $fetchCompletedTasks(currentListId.value);
+    };
+
+
+    const selectList = (id) => {
+      if (currentListId.value !== id) {
+        currentListId.value = id;
       }
-      return tasks;
-    },
-    filterTasksActive: function (tasks) {
-      return tasks.filter((task) => !task.completed);
-    },
-    filterTasksCompleted: function (tasks) {
-      return tasks.filter((task) => task.completed);
-    },
-    filterTasksCurrentList: function (tasks) {
-      return tasks.filter((task) => task.list == this.currentListId);
-    },
+      fetchTasks();
+    };
 
-    selectList(id) {
-      if (this.currentListId != id) {
-        this.currentListId = id;
-      }
-      this.fetchTasks()
-    },
-    selectCategory(id) {
+    const selectCategory = (id) => {
       if (id > 0) {
-        this.currentCategory = id;
+        currentCategory.value = id;
       } else {
-        this.currentCategory = 0;
+        currentCategory.value = 0;
       }
-    },
-    async removeList(id, index) {
-      // delete all tasks from removed list
+    };
+
+    const removeList = async (id, index) => {
+       // delete all tasks from removed list
       let removeTasks = this.openTasks.filter(
         (task) => task.list == id
       );
@@ -167,23 +160,25 @@ export default {
       const { $deleteList } = useNuxtApp()
       await $deleteList(id)
 
-      this.lists.splice(index, 1);
-    },
-    refetchData() {
-      this.fetchTasks();
-      this.fetchCategoriesList();
+      lists.splice(index, 1); 
+    }
+
+    const refetchData = () => {
+      fetchTasks();
+      fetchCategoriesList();
       console.log("refresh all data");
-    },
-    refetchTaskData() {
-      this.fetchTasks();
+    }
+
+    const refetchTaskData = () => {
+      fetchTasks();
       console.log("refresh task data");
-    },
-    logout() {
+    }
+
+    const  logout = () => {
       this.$emit("logout", "logout");
-    },
-  },
-};
+    }
 </script>
+
 
 <style lang='scss'>
 .list-content {

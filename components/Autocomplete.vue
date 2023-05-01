@@ -45,7 +45,7 @@ export default {
       });
     },
     setResult(result) {
-      this.search = result;
+      this.search = result.title;
       this.isOpen = false;
       this.$emit("inputSearch", this.search);
     },
