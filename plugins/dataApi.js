@@ -56,7 +56,7 @@ export default defineNuxtPlugin(nuxtApp => {
     }
 
     async function createTask(data) {
-      create('Tasks', data)
+      return create('Tasks', data)
     }
 
     async function createList(name) {
@@ -76,8 +76,11 @@ export default defineNuxtPlugin(nuxtApp => {
           console.error('There was an error inserting', error)
           return null
         }
-        console.log("created " + JSON.stringify(data));
-        return data
+        if (data) {
+          console.log(data);
+          return data
+        }
+
       } catch (err) {
         console.error('Unknown problem inserting to db', err)
         return null

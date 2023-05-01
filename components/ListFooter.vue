@@ -89,7 +89,8 @@ export default {
       }
 
       const { $createTask } = useNuxtApp()
-      await $createTask(data)
+      const response = await $createTask(data)
+      console.log(response)
     
       this.newTask = "";
       this.newCategory = "";
