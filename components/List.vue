@@ -71,16 +71,18 @@
 
     const supabase = useSupabaseClient();
 
-    const Tasks = supabase.channel('custom-all-channel')
-  .on(
-    'postgres_changes',
-    { event: '*', schema: 'public', table: 'Tasks' },
-    (payload) => {
-      fetchTasks()
+    const Tasks = supabase.channel('custom-all-channel').on('postgres_changes',{ event: '*', schema: 'public', table: '*' }, (payload) => { 
+      console.log(payload)
+      if (payload.table == "Tasks") {
+        fetchTasks() 
+      }
+      else {
+        fetchCategoriesList()
+      }
 
-    }
-  )
-  .subscribe()
+    }).subscribe()
+
+
 
     const filteredTasks = computed(() => {
       if (currentCategory.value === 0) {
@@ -147,9 +149,13 @@
 
     const removeList = async (id, index) => {
        // delete all tasks from removed list
-      let removeTasks = this.openTasks.filter(
+      let removeTasks = openTasks.value.filter(
         (task) => task.list == id
       );
+      let removeCompleted = completedTasks.value.filter(
+        (task) => task.list == id
+      );
+      removeTasks.push(...removeCompleted)
        removeTasks.forEach((task) => {
         const { $deleteTask } = useNuxtApp()
         $deleteTask(task.id);
@@ -158,7 +164,7 @@
       const { $deleteList } = useNuxtApp()
       await $deleteList(id)
 
-      lists.splice(index, 1); 
+      lists.value.splice(index, 1); 
     }
 
     const refetchData = () => {

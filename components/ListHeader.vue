@@ -168,6 +168,9 @@ export default {
         const { $deleteCategory } = useNuxtApp()
         await $deleteCategory(id)
       }
+      this.modalData = this.modalData.filter(
+        (item) => item.id != id
+      );
     },
     logout() {
       this.$emit("logoutUser", "logout");
