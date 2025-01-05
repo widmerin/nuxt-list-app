@@ -17,6 +17,7 @@
         group="tasks" 
         @start="drag=true" 
         @end="drag=false"
+        :disabled="currentCategory != 0"
         item-key="id">
         <template #item="{element, index}">
           <ListItem :task="element" :categories="categories" :key="element.id" :index="index"/>
@@ -87,8 +88,6 @@
       }
 
     }).subscribe()
-
-
 
     const updateOpenTasksSortOrder = async () => {
       openTasks.value.forEach((update, index) => {

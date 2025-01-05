@@ -1,5 +1,5 @@
 <template>
-  <div class="list-item">
+  <div class="list-item"  @mousedown="handleItemMouseDown">
     <div class="list-item-label">
       <label>
         <input
@@ -78,6 +78,14 @@ export default {
     },
   },
   methods: {
+
+    // Handle mouse down on list item to prevent drag
+    handleItemMouseDown(event) {
+      // Prevent drag if the target is a checkbox (or any other interactive elements)
+      if (event.target.closest("input[type='checkbox']")) {
+        event.stopPropagation();  // Prevent dragging when clicking the checkbox
+      }
+    },
     cancelEdit() {
       this.editing = false;
       this.title = this.beforeEditCache;
