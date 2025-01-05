@@ -39,6 +39,12 @@
     >
       +
     </button>
+    <button
+    class="waves-effect waves-light btn list-footer-add-refresh orange"
+     @click="refreshData"
+  >
+  <i class="material-icons list-footer-add-refresh-icon" >sync</i>
+  </button>
   </div>
 </template>
 
@@ -73,6 +79,10 @@ export default {
       this.newTask = "";
       this.newCategory = "";
       window.scrollTo(0,0);
+    },
+    refreshData() {
+      this.$emit("refreshedData");
+
     },
     closeModal() {
       this.showModal = false;
@@ -123,6 +133,26 @@ export default {
     align-items: center;
     font-size: 30px;
     padding-bottom: 4px;
+  }
+  
+  &-add-refresh {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    text-align: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    padding-bottom: 4px;
+    &-icon {
+      font-size: 2rem !Important;
+      padding-top: 2px;
+    }
   }
 
   &-overlay {

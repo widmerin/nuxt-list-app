@@ -40,7 +40,10 @@
         {{ category.name }} 
       </option>
     </select>
-    <div class="list-item-remove" @click="removeTask">&times;</div>
+    <span class="list-item-drag drag-handle" v-if="!completed" @mousedown="handleDragStart">
+      &#x21d5; <!-- Example drag icon -->
+    </span>
+    <div class="list-item-remove" v-if="completed" @click="removeTask">&times;</div>
   </div>
 </template>
 
@@ -78,6 +81,9 @@ export default {
     },
   },
   methods: {
+    handleDragStart() {
+        console.log("drage")
+    },
     cancelEdit() {
       this.editing = false;
       this.title = this.beforeEditCache;
@@ -147,7 +153,9 @@ export default {
       padding-left: 30px;
     }
   }
-
+  &-drag {
+    padding: 1px 10px 0;
+  }
   &-edit {
     height: 2em;
     border-bottom: 2px solid #48426d !important;
