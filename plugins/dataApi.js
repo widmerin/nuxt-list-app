@@ -20,7 +20,7 @@ export default defineNuxtPlugin(nuxtApp => {
       }
 
       try {
-        const { data } = await supabase.from("Tasks").select('*').eq('list', list).eq('completed', 'false').order('created', { ascending: false })
+        const { data } = await supabase.from("Tasks").select('*').eq('list', list).eq('completed', 'false').order('sortOrder', { ascending: true })
         if (data && data.length > 0) {
           return data
         }
@@ -147,6 +147,9 @@ export default defineNuxtPlugin(nuxtApp => {
       return null
     }
     }
+
+
+
     return {
         provide: {
             fetchData,

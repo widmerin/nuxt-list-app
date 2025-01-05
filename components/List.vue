@@ -12,13 +12,17 @@
     /> 
         <div class="list-content">
       <div class="list-content-tasks-active" v-if="openTasks">
-          <ListItem
-           v-for="(task, index) in filteredTasks"
-            :key="task.id"
-            :task="task"
-            :categories="categories"
-            :index="index"
-          />
+        <draggable 
+        v-model="filteredItems" 
+        group="tasks" 
+        @start="drag=true" 
+        @end="onDragEnd"
+        item-key="id">
+        <template #item="{element, index}">
+          <ListItem :task="element" :categories="categories" :key="element.id" :index="index"/>
+         </template>
+      </draggable>
+      
       </div>
       <div
         class="list-content-tasks-completed"
@@ -68,8 +72,10 @@
     const completedTasks = ref([]);
     const openTasks = ref([]);
     const suggestions = ref([]);
-
+    const drag = ref(false)
     const supabase = useSupabaseClient();
+    const itemIndices = ref([]);
+    const { $updateTask } = useNuxtApp()
 
     const Tasks = supabase.channel('custom-all-channel').on('postgres_changes',{ event: '*', schema: 'public', table: '*' }, (payload) => { 
       console.log(payload)
@@ -84,16 +90,39 @@
 
 
 
-    const filteredTasks = computed(() => {
-      if (currentCategory.value === 0) {
-        return openTasks.value;
-      } else {
-        return openTasks.value.filter(
-          (task) =>
+    // Drag End Handler
+    const onDragEnd = async () => {
+      drag.value = false;
+
+      console.log(JSON.stringify(openTasks.value))
+
+      openTasks.value.forEach((update, index) => {
+        console.log(update.title+" sortby: " +update.sortOrder + "new index" + index)
+        $updateTask({
+          id: update.id,
+          sortOrder: index,
+        });
+      });
+    }
+
+    
+
+    // Filtered List (computed)
+    const filteredItems = computed({
+      get() {
+        return currentCategory.value === 0
+          ? openTasks.value // All items
+          : openTasks.value.filter((task) =>
             task.category === currentCategory.value &&
-            task.list === currentListId.value
+            task.list === currentListId.value); // Filter by category
+      },
+      set(newFiltered) {
+        // Update the original list's order based on the filtered list
+        const originalOrder = openTasks.value.map((item) => item.id);
+        openTasks.value = newFiltered.concat(
+          openTasks.value.filter((item) => !originalOrder.includes(item.id))
         );
-      }
+      },
     });
 
     const getSuggestions = computed(() => {
@@ -148,7 +177,7 @@
     };
 
     const removeList = async (id, index) => {
-       // delete all tasks from removed list
+       // delete all tasks from removed listf
       let removeTasks = openTasks.value.filter(
         (task) => task.list == id
       );

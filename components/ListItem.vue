@@ -12,7 +12,7 @@
         v-if="!editing"
         @click="editTask"
         :class="{ completed: completed }"
-        >{{ task.title }} </span
+        > (Index: {{index}}) {{ task.title }} sortOrder: {{task.sortOrder }}</span
       >
       <input
         v-else
@@ -91,6 +91,7 @@ export default {
           title: this.title,
           completed: this.completed,
           category: this.task.category ?  this.task.category : null,
+         // sortOrder: this.index
       }
       const { $updateTask } = useNuxtApp()
       await $updateTask(task)
