@@ -5,6 +5,7 @@
         <input
           type="checkbox"
           v-model="completed"
+          @click.stop="handleCheckboxClick"
           @change="doneEdit"
         /><span></span>
       </label>
@@ -19,6 +20,7 @@
         class="list-item-edit"
         type="text"
         v-model="title"
+        @click.stop="handleCheckboxClick"
         @blur="doneEdit"
         @keyup.enter="doneEdit"
         @keyup.esc="cancelEdit"
@@ -85,6 +87,10 @@ export default {
       if (event.target.closest("input[type='checkbox']")) {
         event.stopPropagation();  // Prevent dragging when clicking the checkbox
       }
+    },
+    handleCheckboxClick (event) {
+  // Stop event propagation to prevent triggering the drag action
+      event.stopPropagation();
     },
     cancelEdit() {
       this.editing = false;
