@@ -12,7 +12,7 @@
         v-if="!editing"
         @click="editTask"
         :class="{ completed: completed }"
-        > (Index: {{index}}) {{ task.title }} sortOrder: {{task.sortOrder }}</span
+        > {{ task.title }} </span
       >
       <input
         v-else

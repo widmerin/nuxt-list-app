@@ -85,7 +85,8 @@ export default {
           title: this.newTask,
           list: this.currentListId,
           completed: false,
-          category:  this.newCategory ?  this.newCategory : null
+          category:  this.newCategory ?  this.newCategory : null,
+          sortOrder: 0
       }
 
       const { $createTask } = useNuxtApp()

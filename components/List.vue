@@ -16,7 +16,7 @@
         v-model="filteredItems" 
         group="tasks" 
         @start="drag=true" 
-        @end="onDragEnd"
+        @end="drag=false"
         item-key="id">
         <template #item="{element, index}">
           <ListItem :task="element" :categories="categories" :key="element.id" :index="index"/>
@@ -90,21 +90,18 @@
 
 
 
-    // Drag End Handler
-    const onDragEnd = async () => {
-      drag.value = false;
-
-      console.log(JSON.stringify(openTasks.value))
-
+    const updateOpenTasksSortOrder = async () => {
       openTasks.value.forEach((update, index) => {
         console.log(update.title+" sortby: " +update.sortOrder + "new index" + index)
-        $updateTask({
-          id: update.id,
-          sortOrder: index,
-        });
+        if(update.sortOrder != index) {
+          console.log("UPDATE")
+          $updateTask({
+            id: update.id,
+            sortOrder: index,
+          });
+        }
       });
-    }
-
+    };
     
 
     // Filtered List (computed)
@@ -160,6 +157,12 @@
       completedTasks.value = await $fetchCompletedTasks(currentListId.value);
     };
 
+    watch(
+      openTasks, 
+      () => {
+        updateOpenTasksSortOrder()
+      }
+    );
 
     const selectList = (id) => {
       if (currentListId.value !== id) {
