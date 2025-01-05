@@ -19,10 +19,9 @@
         @end="drag=false"
         :disabled="currentCategory != 0"
         handle=".drag-handle" 
-        @change="log"
         item-key="id">
         <template #item="{element, index}">
-          <ListItem :task="element" :categories="categories" :key="element.id" :index="index"/>
+          <ListItem :task="element" :categories="categories" :key="element.id" :index="index" :currentCategory="currentCategory"/>
          </template>
       </draggable>
       
@@ -80,10 +79,7 @@
     const supabase = useSupabaseClient();
     const itemIndices = ref([]);
     const { $updateTask } = useNuxtApp()
-// Log the changes made when the list is updated
-const log = () => {
-  console.log("Items after drag:", list.value);
-};
+
     const Tasks = supabase.channel('custom-all-channel').on('postgres_changes',{ event: '*', schema: 'public', table: '*' }, (payload) => { 
       console.log(payload)
       if (payload.table == "Tasks") {
@@ -97,9 +93,7 @@ const log = () => {
 
     const updateOpenTasksSortOrder = async () => {
       openTasks.value.forEach((update, index) => {
-        console.log(update.title+" sortby: " +update.sortOrder + "new index" + index)
         if(update.sortOrder != index) {
-          console.log("UPDATE")
           $updateTask({
             id: update.id,
             sortOrder: index,

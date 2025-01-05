@@ -40,7 +40,7 @@
         {{ category.name }} 
       </option>
     </select>
-    <span class="list-item-drag drag-handle" v-if="!completed" @mousedown="handleDragStart">
+    <span class="list-item-drag drag-handle" v-if="!completed && currentCategory === 0" @mousedown="handleDragStart">
       &#x21d5; <!-- Example drag icon -->
     </span>
     <div class="list-item-remove" v-if="completed" @click="removeTask">&times;</div>
@@ -61,6 +61,9 @@ export default {
     categories: {
       type: Array,
     },
+    currentCategory: {
+      type: Number,
+    }
   },
   data() {
     return {
