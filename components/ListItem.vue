@@ -6,13 +6,11 @@
           type="checkbox"
           v-model="completed"
           @change="doneEdit"
-          @touchstart="doneEdit"
         /><span></span>
       </label>
       <span
         v-if="!editing"
         @click="editTask"
-        @touchstart="editTask"
         :class="{ completed: completed }"
         > {{ task.title }} </span
       >
@@ -21,7 +19,6 @@
         class="list-item-edit"
         type="text"
         v-model="title"
-        @click.stop="handleCheckboxClick"
         @blur="doneEdit"
         @keyup.enter="doneEdit"
         @keyup.esc="cancelEdit"
@@ -32,7 +29,6 @@
       class="list-item-category-select"
       v-model="task.category"
       @change="doneEdit"
-      @touchstart="doneEdit"
       dir="rtl"
     >
       <option selected value=""></option>
@@ -82,18 +78,6 @@ export default {
     },
   },
   methods: {
-
-    // Handle mouse down on list item to prevent drag
-    handleItemMouseDown(event) {
-      // Prevent drag if the target is a checkbox (or any other interactive elements)
-      if (event.target.closest("input[type='checkbox']")) {
-        event.stopPropagation();  // Prevent dragging when clicking the checkbox
-      }
-    },
-    handleCheckboxClick (event) {
-  // Stop event propagation to prevent triggering the drag action
-      event.stopPropagation();
-    },
     cancelEdit() {
       this.editing = false;
       this.title = this.beforeEditCache;
