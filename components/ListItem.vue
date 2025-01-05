@@ -5,13 +5,14 @@
         <input
           type="checkbox"
           v-model="completed"
-          @click.stop="handleCheckboxClick"
           @change="doneEdit"
+          @touchstart="doneEdit"
         /><span></span>
       </label>
       <span
         v-if="!editing"
         @click="editTask"
+        @touchstart="editTask"
         :class="{ completed: completed }"
         > {{ task.title }} </span
       >
@@ -31,6 +32,7 @@
       class="list-item-category-select"
       v-model="task.category"
       @change="doneEdit"
+      @touchstart="doneEdit"
       dir="rtl"
     >
       <option selected value=""></option>
@@ -105,7 +107,7 @@ export default {
           title: this.title,
           completed: this.completed,
           category: this.task.category ?  this.task.category : null,
-         // sortOrder: this.index
+          sortOrder: this.completed ? null : this.task.sortOrder,
       }
       const { $updateTask } = useNuxtApp()
       await $updateTask(task)
