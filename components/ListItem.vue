@@ -147,7 +147,7 @@ export default {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: stretch;
+    text-align: left;
     label {
       padding-top: 2px;
       padding-left: 5px;

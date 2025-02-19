@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Nuxt List',
@@ -33,5 +32,5 @@ export default defineNuxtConfig({
   },
 
   modules: ['@nuxtjs/supabase'],
-
+  compatibilityDate: '2025-01-05',
 })
